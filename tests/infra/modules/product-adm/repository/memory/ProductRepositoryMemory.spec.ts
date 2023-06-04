@@ -1,15 +1,14 @@
-import ProductRepositoryMemory from "../../../../../src/infra/modules/product-adm/repository/memory/ProductRepositoryMemory";
-import Product from "../../../../../src/modules/product-adm/domain/entity/ProductEntity";
+import ProductRepositoryMemory from "../../../../../../src/infra/modules/product-adm/repository/memory/ProductRepositoryMemory";
+import Product from "../../../../../../src/modules/product-adm/entity/ProductEntity";
 
 describe("ProductRepository test", () => {
-
   it("should return product", async () => {
     const productProps = {
       name: "test",
       description: "test",
       purchasePrice: 10,
       stock: 10,
-    }
+    };
     const product = new Product(productProps);
     const productRepository = new ProductRepositoryMemory();
     const result = await productRepository.add(product);
@@ -25,7 +24,7 @@ describe("ProductRepository test", () => {
       description: "test",
       purchasePrice: 10,
       stock: 10,
-    }
+    };
     const product = new Product(productProps);
     const productRepository = new ProductRepositoryMemory();
     const savedProduct = await productRepository.add(product);
