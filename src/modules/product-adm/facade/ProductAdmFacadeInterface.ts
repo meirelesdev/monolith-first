@@ -1,7 +1,7 @@
 import UseCaseInterface from "../../@shared/domain/usecase/UsecaseInterface";
 import { AddProductOutputDTO } from "../usecase/add-product/AddProductDTO";
 
-export interface UsecasesProps {
+export interface UsecasesProductFacadeProps {
   addUseCase: UseCaseInterface<AddProductFacadeInputDTO, AddProductOutputDTO>;
   stockUseCase: UseCaseInterface<CheckStockFacadeInputDTO, CheckStockFacadeOutputDTO>;
 }

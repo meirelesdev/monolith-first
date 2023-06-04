@@ -1,12 +1,13 @@
+import UsecaseInterface from "../../../@shared/domain/usecase/UsecaseInterface";
 import ProductRepository from "../../repository/ProductRepository";
-import { FindALlProductsDTO } from "./FindAllProductsDTO";
+import { FindAllProductsDTO } from "./FindAllProductsDTO";
 
-export default class FindAllProductsUsecase {
+export default class FindAllProductsUsecase implements UsecaseInterface<void, FindAllProductsDTO> {
   #productRepository: ProductRepository;
   constructor(productRepository: ProductRepository) {
     this.#productRepository = productRepository;
   }
-  async execute(): Promise<FindALlProductsDTO> {
+  async execute(): Promise<FindAllProductsDTO> {
     const products = await this.#productRepository.findAll();
     const result = products.map((product) => ({
       id: product.id,

@@ -1,7 +1,7 @@
-import ProductRepositoryMemory from "../../../../../src/infra/modules/store-catalog/repository/memory/ProductRepositoryMemory";
+import ProductRepositoryMemory from "../../../../../src/infra/store-catalog/repository/memory/ProductRepositoryMemory";
 import ProductRepository from "../../../../../src/modules/store-catalog/repository/ProductRepository";
 import FindAllProductsUsecase from "../../../../../src/modules/store-catalog/usecase/find-all-products/FindAllProductsUsecase";
-import GetProduct from "../../../../../src/modules/store-catalog/usecase/get-product/GetProduct";
+import GetProduct from "../../../../../src/modules/store-catalog/usecase/get-product/GetProductUsecase";
 
 let productRepository: ProductRepository;
 let findAllProductsUsecase: FindAllProductsUsecase;

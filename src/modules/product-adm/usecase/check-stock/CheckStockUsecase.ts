@@ -2,7 +2,9 @@ import UseCaseInterface from "../../../@shared/domain/usecase/UsecaseInterface";
 import ProductRepository from "../../repository/ProductRepository";
 import { CheckStockInputDTO, CheckStockOutputDTO } from "./checkStockDTO";
 
-export default class CheckStockUsecase implements UseCaseInterface<any, any> {
+export default class CheckStockUsecase
+  implements UseCaseInterface<CheckStockInputDTO, CheckStockOutputDTO>
+{
   #productRepository: ProductRepository;
   constructor(productRepository: ProductRepository) {
     this.#productRepository = productRepository;

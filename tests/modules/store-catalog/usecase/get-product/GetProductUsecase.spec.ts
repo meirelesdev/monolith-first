@@ -1,15 +1,13 @@
-import ProductRepositoryMemory from "../../../../../src/infra/modules/store-catalog/repository/memory/ProductRepositoryMemory";
+import ProductRepositoryMemory from "../../../../../src/infra/store-catalog/repository/memory/ProductRepositoryMemory";
 import ProductRepository from "../../../../../src/modules/store-catalog/repository/ProductRepository";
-import FindAllProductsUsecase from "../../../../../src/modules/store-catalog/usecase/find-all-products/FindAllProductsUsecase";
-import GetProduct from "../../../../../src/modules/store-catalog/usecase/get-product/GetProduct";
+import GetProductUsecase from "../../../../../src/modules/store-catalog/usecase/get-product/GetProductUsecase";
 
 let productRepository: ProductRepository;
-let findAllProductsUsecase: FindAllProductsUsecase;
-let findOneProductUsecase: GetProduct;
+let findOneProductUsecase: GetProductUsecase;
 describe("Store catalog products tests", () => {
   beforeEach(() => {
     productRepository = new ProductRepositoryMemory();
-    findOneProductUsecase = new GetProduct(productRepository);
+    findOneProductUsecase = new GetProductUsecase(productRepository);
   });
   it("should find one catalog product", async () => {
     const output = await findOneProductUsecase.execute({
