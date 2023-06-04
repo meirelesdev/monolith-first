@@ -1,5 +1,5 @@
 import ProductRepositoryMemory from "../../../../../src/infra/modules/product-adm/repository/memory/ProductRepositoryMemory";
-import UseCaseInterface from "../../../../../src/modules/@shared/domain/usecase/UseCaseInterface";
+import UseCaseInterface from "../../../../../src/modules/@shared/domain/usecase/UsecaseInterface";
 import {
   CheckStockFacadeInputDTO,
   CheckStockFacadeOutputDTO,

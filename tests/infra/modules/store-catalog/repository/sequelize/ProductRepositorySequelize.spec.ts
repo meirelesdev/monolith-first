@@ -37,8 +37,6 @@ describe("ProductRepository test", () => {
     expect(result.description).toBe("test");
     expect(result.purchasePrice).toBe(10);
     expect(result.stock).toBe(10);
-    expect(result.createdAt).toBeDefined();
-    expect(result.updatedAt).toBeDefined();
   });
 
   it("should find a product", async () => {

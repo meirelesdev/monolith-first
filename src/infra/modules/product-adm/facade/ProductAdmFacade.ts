@@ -1,11 +1,10 @@
-import UseCaseInterface from "../../../../modules/@shared/domain/usecase/UseCaseInterface";
+import UseCaseInterface from "../../../../modules/@shared/domain/usecase/UsecaseInterface";
 import ProductAdmFacadeInterface, {
   AddProductFacadeInputDTO,
   CheckStockFacadeInputDTO,
   CheckStockFacadeOutputDTO,
   UsecasesProps,
 } from "../../../../modules/product-adm/facade/ProductAdmFacadeInterface";
-import Product from "../../../../modules/product-adm/entity/ProductEntity";
 import {
   AddProductInputDTO,
   AddProductOutputDTO,

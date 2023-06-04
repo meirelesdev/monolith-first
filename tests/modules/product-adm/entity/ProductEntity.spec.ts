@@ -1,4 +1,4 @@
-import Product from "../../../../../src/modules/product-adm/entity/ProductEntity";
+import Product from "../../../../src/modules/product-adm/entity/ProductEntity";
 
 describe("ProductEntity tests", () => {
   it("should create a new ProductEntity", () => {

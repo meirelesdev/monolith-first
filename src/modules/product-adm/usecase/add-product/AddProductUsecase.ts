@@ -1,6 +1,6 @@
 import Product from "../../entity/ProductEntity";
 import ProductRepository from "../../repository/ProductRepository";
-import UseCaseInterface from "../../../@shared/domain/usecase/UseCaseInterface";
+import UseCaseInterface from "../../../@shared/domain/usecase/UsecaseInterface";
 import { AddProductInputDTO, AddProductOutputDTO } from "./AddProductDTO";
 
 export default class AddProductUseCase

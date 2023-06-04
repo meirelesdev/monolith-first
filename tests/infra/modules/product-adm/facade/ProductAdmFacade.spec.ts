@@ -1,22 +1,23 @@
-import { Sequelize } from "sequelize-typescript";
-import ProductAdmFacadeFactory from "../../../../../src/infra/modules/product-adm/factory/ProductAdmFacadeFactory";
+import { Sequelize, SequelizeOptions } from "sequelize-typescript";
+import ProductAdmFacadeFactory from "../../../../../src/modules/product-adm/facade/ProductAdmFacadeFactory";
 import ProductModel from "../../../../../src/infra/modules/product-adm/repository/sequelize/ProductModel";
 
 describe("ProductAdmFacade test", () => {
   let sequelize: Sequelize;
 
   beforeEach(async () => {
-    sequelize = new Sequelize({
+    const configSequelize: SequelizeOptions = {
       dialect: "sqlite",
       storage: ":memory:",
       logging: false,
       sync: { force: true },
-    });
+    };
+    sequelize = new Sequelize(configSequelize);
     sequelize.addModels([ProductModel]);
     await sequelize.sync();
   });
 
-  it("should crate a product ", async () => {
+  it("should create a product ", async () => {
     const productFacade = ProductAdmFacadeFactory.create();
     const input = {
       id: "1",
@@ -36,6 +37,20 @@ describe("ProductAdmFacade test", () => {
     expect(product.description).toBe(input.description);
     expect(product.purchasePrice).toBe(input.purchasePrice);
     expect(product.stock).toBe(input.stock);
+  });
+
+  it("should check stock of product created.", async () => {
+    const productFacade = ProductAdmFacadeFactory.create();
+    const input = {
+      name: "Product 1",
+      description: "Product01 01 ",
+      purchasePrice: 10,
+      stock: 10,
+    };
+    const addProductOutput = await productFacade.addProduct(input);
+    const checkStock = await productFacade.checkStock({ productId: addProductOutput.id });
+    expect(checkStock.productId).toBeDefined();
+    expect(checkStock.stock).toBe(addProductOutput.stock);
   });
 
   afterEach(async () => {
