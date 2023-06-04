@@ -1,9 +1,9 @@
-import Product from "../entity/ProductEntity";
-import UseCaseInterface from "../usecase/UseCaseInterface";
+import UseCaseInterface from "../../@shared/domain/usecase/UseCaseInterface";
+import { AddProductOutputDTO } from "../usecase/add-product/AddProductDTO";
 
 export interface UsecasesProps {
-  addUseCase: UseCaseInterface;
-  stockUseCase: UseCaseInterface;
+  addUseCase: UseCaseInterface<AddProductFacadeInputDTO, AddProductOutputDTO>;
+  stockUseCase: UseCaseInterface<CheckStockFacadeInputDTO, CheckStockFacadeOutputDTO>;
 }
 
 export interface AddProductFacadeInputDTO {
@@ -23,6 +23,6 @@ export interface CheckStockFacadeOutputDTO {
 }
 
 export default interface ProductAdmFacadeInterface {
-  addProduct(input: AddProductFacadeInputDTO): Promise<Product>;
+  addProduct(input: AddProductFacadeInputDTO): Promise<AddProductOutputDTO>;
   checkStock(input: CheckStockFacadeInputDTO): Promise<CheckStockFacadeOutputDTO>;
 }

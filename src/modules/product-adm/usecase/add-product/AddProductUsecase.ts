@@ -1,9 +1,11 @@
 import Product from "../../entity/ProductEntity";
 import ProductRepository from "../../repository/ProductRepository";
-import UseCaseInterface from "../UseCaseInterface";
+import UseCaseInterface from "../../../@shared/domain/usecase/UseCaseInterface";
 import { AddProductInputDTO, AddProductOutputDTO } from "./AddProductDTO";
 
-export default class AddProductUseCase implements UseCaseInterface {
+export default class AddProductUseCase
+  implements UseCaseInterface<AddProductInputDTO, AddProductOutputDTO>
+{
   #productRepository: ProductRepository;
   constructor(productRepository: ProductRepository) {
     this.#productRepository = productRepository;
