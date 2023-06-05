@@ -1,6 +1,6 @@
 import { Sequelize, SequelizeOptions } from "sequelize-typescript";
-import StoreCatalogFacadeFactory from "../../../../../src/infra/store-catalog/facade/StoreCatalogFacadeFactory";
-import ProductModel from "../../../../../src/infra/store-catalog/repository/sequelize/ProductModel";
+import StoreCatalogFacadeFactory from "../../../../src/infra/store-catalog/facade/StoreCatalogFacadeFactory";
+import ProductModel from "../../../../src/infra/store-catalog/repository/sequelize/ProductModel";
 
 describe("ProductAdmFacade test", () => {
   let sequelize: Sequelize;

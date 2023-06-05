@@ -1,5 +1,5 @@
-import ProductRepositoryMemory from "../../../../../../src/infra/product-adm/repository/memory/ProductRepositoryMemory";
-import Product from "../../../../../../src/modules/product-adm/entity/ProductEntity";
+import ProductRepositoryMemory from "../../../../../src/infra/product-adm/repository/memory/ProductRepositoryMemory";
+import Product from "../../../../../src/modules/product-adm/entity/ProductEntity";
 
 describe("ProductRepository test", () => {
   it("should return product", async () => {
@@ -18,7 +18,7 @@ describe("ProductRepository test", () => {
     expect(result.stock).toBe(10);
   });
 
-  it("should find a product", async () => {
+  it("should find a product adm memory", async () => {
     const productProps = {
       name: "test",
       description: "test",

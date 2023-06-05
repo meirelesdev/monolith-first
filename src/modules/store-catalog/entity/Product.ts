@@ -1,12 +1,12 @@
 import BaseEntity from "../../@shared/domain/entity/BaseEntity";
 
 type ProductProps = {
-  id: string;
+  id?: string;
   name: string;
   description: string;
   salesPrice: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export default class Product extends BaseEntity {

@@ -1,7 +1,7 @@
-import ProductRepositoryMemory from "../../../../../../src/infra/store-catalog/repository/memory/ProductRepositoryMemory";
+import ProductRepositoryMemory from "../../../../../src/infra/store-catalog/repository/memory/ProductRepositoryMemory";
 
 describe("ProductRepository test", () => {
-  it("should find a product", async () => {
+  it("should find a product catalog memory", async () => {
     const productRepository = new ProductRepositoryMemory();
     const productDb = await productRepository.find("1");
     expect(productDb.id).toBe("1");

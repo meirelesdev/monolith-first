@@ -1,7 +1,7 @@
 import { Sequelize, SequelizeOptions } from "sequelize-typescript";
-import ProductModel from "../../../../../../src/infra/product-adm/repository/sequelize/ProductModel";
-import ProductRepositorySequelize from "../../../../../../src/infra/product-adm/repository/sequelize/ProductRepositorySequelize";
-import Product from "../../../../../../src/modules/product-adm/entity/ProductEntity";
+import ProductModel from "../../../../../src/infra/product-adm/repository/sequelize/ProductModel";
+import ProductRepositorySequelize from "../../../../../src/infra/product-adm/repository/sequelize/ProductRepositorySequelize";
+import Product from "../../../../../src/modules/product-adm/entity/ProductEntity";
 
 describe("ProductRepository test", () => {
   let sequelize: Sequelize;
@@ -41,7 +41,7 @@ describe("ProductRepository test", () => {
     expect(result.updatedAt).toBeDefined();
   });
 
-  it("should find a product", async () => {
+  it("should find a product adm sequelize", async () => {
     const productProps = {
       id: "1",
       name: "test",
