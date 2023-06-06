@@ -9,7 +9,7 @@ type ProductProps = {
   updatedAt?: Date;
 };
 
-export default class Product extends BaseEntity {
+export default class ProductCatalog extends BaseEntity {
   #name: string;
   #description: string;
   #salesPrice: number;

@@ -1,8 +1,8 @@
-import Product from "../../../../modules/store-catalog/entity/Product";
+import ProductCatalog from "../../../../modules/store-catalog/entity/ProductCatalog";
 import ProductRepository from "../../../../modules/store-catalog/repository/ProductRepository";
 
 export default class ProductRepositoryMemory implements ProductRepository {
-  products: Product[];
+  products: ProductCatalog[];
   constructor() {
     const productProps = {
       id: "1",
@@ -13,7 +13,7 @@ export default class ProductRepositoryMemory implements ProductRepository {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    const product1 = new Product(productProps);
+    const product1 = new ProductCatalog(productProps);
     const productProps2 = {
       id: "2",
       name: "test",
@@ -23,13 +23,13 @@ export default class ProductRepositoryMemory implements ProductRepository {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    const product2 = new Product(productProps2);
+    const product2 = new ProductCatalog(productProps2);
     this.products = [product1, product2];
   }
-  async findAll(): Promise<Product[]> {
+  async findAll(): Promise<ProductCatalog[]> {
     return this.products;
   }
-  async find(id: string): Promise<Product> {
+  async find(id: string): Promise<ProductCatalog> {
     return this.products.find((product) => product.id === id);
   }
 }

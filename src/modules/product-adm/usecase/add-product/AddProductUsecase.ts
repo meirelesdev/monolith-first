@@ -1,4 +1,4 @@
-import Product from "../../entity/ProductEntity";
+import ProductAdm from "../../entity/ProductEntity";
 import ProductRepository from "../../repository/ProductRepository";
 import UseCaseInterface from "../../../@shared/domain/usecase/UsecaseInterface";
 import { AddProductInputDTO, AddProductOutputDTO } from "./AddProductDTO";
@@ -19,7 +19,7 @@ export default class AddProductUseCase
       purchasePrice: input.purchasePrice,
       stock: input.stock,
     };
-    const product = new Product(props);
+    const product = new ProductAdm(props);
     this.#productRepository.add(product);
     return {
       id: product.id,

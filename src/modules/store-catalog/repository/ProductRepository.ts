@@ -1,4 +1,4 @@
-import Product from "../entity/Product";
+import Product from "../entity/ProductCatalog";
 
 export default interface ProductRepository {
   findAll(): Promise<Product[]>;
