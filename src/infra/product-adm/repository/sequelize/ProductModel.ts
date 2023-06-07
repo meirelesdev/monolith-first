@@ -21,9 +21,9 @@ export default class ProductModel extends Model {
   @Column({ allowNull: false })
   stock: number;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, field: "created_at" })
   createdAt: Date;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, field: "updated_at" })
   updatedAt: Date;
 }

@@ -10,7 +10,7 @@ import {
   AddProductOutputDTO,
 } from "../../../modules/product-adm/usecase/add-product/AddProductDTO";
 
-export default class ProductFacade implements ProductAdmFacadeInterface {
+export default class ProductAdmFacade implements ProductAdmFacadeInterface {
   #addUsecase: UsecaseInterface<AddProductInputDTO, AddProductOutputDTO>;
   #checkStockUsecase: UsecaseInterface<CheckStockFacadeInputDTO, CheckStockFacadeOutputDTO>;
   constructor(usecasesProps: UsecasesProductFacadeProps) {
