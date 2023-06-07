@@ -1,4 +1,3 @@
-import { string } from "yup";
 import UsecaseInterface from "../../../@shared/domain/usecase/UsecaseInterface";
 import Client from "../../entity/Client";
 import ClientRepository from "../../repository/ClientRepository";
