@@ -35,7 +35,7 @@ export default class ProductRepositorySequelize implements ProductRepository {
         id,
       },
     });
-
+    if (!productModel) throw new Error(`Product not found`);
     return new ProductAdm({
       id: productModel.id,
       name: productModel.name,

@@ -15,9 +15,6 @@ export default class ClientModel extends Model {
   @Column({ allowNull: false })
   email: string;
 
-  @Column({ allowNull: false })
-  address: string;
-
   @Column({ allowNull: false, field: "created_at" })
   createdAt: Date;
 

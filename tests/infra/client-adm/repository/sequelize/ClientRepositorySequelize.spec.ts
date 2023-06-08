@@ -1,4 +1,5 @@
 import { Sequelize, SequelizeOptions } from "sequelize-typescript";
+import AddressModel from "../../../../../src/infra/client-adm/repository/sequelize/AddressModel";
 import ClientModel from "../../../../../src/infra/client-adm/repository/sequelize/ClientModel";
 import ClientRepositorySequelize from "../../../../../src/infra/client-adm/repository/sequelize/ClientRepositorySequelize";
 import ProductModel from "../../../../../src/infra/product-adm/repository/sequelize/ProductModel";
@@ -17,7 +18,7 @@ describe("ProductRepository test", () => {
       sync: { force: true },
     };
     sequelize = new Sequelize(configConnection);
-    sequelize.addModels([ClientModel]);
+    sequelize.addModels([ClientModel, AddressModel]);
     await sequelize.sync();
   });
 
@@ -29,7 +30,13 @@ describe("ProductRepository test", () => {
     const clientProps = {
       name: "Client 1",
       email: "test@example.com",
-      address: "Address 1",
+      address: {
+        street: "Address 1",
+        number: "01",
+        city: "city 01",
+        state: "State 01",
+        zipcode: "88008000",
+      },
     };
     const client = new Client(clientProps);
     const clientrepository = new ClientRepositorySequelize();
@@ -37,7 +44,11 @@ describe("ProductRepository test", () => {
     expect(result.id).toBeDefined();
     expect(result.name).toBe(clientProps.name);
     expect(result.email).toBe(clientProps.email);
-    expect(result.address).toBe(clientProps.address);
+    expect(client.address.street).toBe(clientProps.address.street);
+    expect(client.address.number).toBe(clientProps.address.number);
+    expect(client.address.city).toBe(clientProps.address.city);
+    expect(client.address.state).toBe(clientProps.address.state);
+    expect(client.address.zipcode).toBe(clientProps.address.zipcode);
     expect(result.createdAt).toBeDefined();
     expect(result.updatedAt).toBeDefined();
   });
@@ -46,14 +57,26 @@ describe("ProductRepository test", () => {
     const clientProps = {
       name: "Client 1",
       email: "test@example.com",
-      address: "Address 1",
+      address: {
+        street: "Address 1",
+        number: "01",
+        complement: "complement 01",
+        city: "city 01",
+        state: "State 01",
+        zipcode: "88008000",
+      },
     };
     const client = new Client(clientProps);
     const clientRepository = new ClientRepositorySequelize();
     await clientRepository.add(client);
     const clientDb = await clientRepository.find(client.id);
     expect(clientDb).toBeDefined();
-    expect(clientDb.address).toBe(client.address);
+    expect(client.address.street).toBe(clientProps.address.street);
+    expect(client.address.number).toBe(clientProps.address.number);
+    expect(client.address.city).toBe(clientProps.address.city);
+    expect(client.address.state).toBe(clientProps.address.state);
+    expect(client.address.zipcode).toBe(clientProps.address.zipcode);
+    expect(client.address.complement).toBe(clientProps.address.complement);
     expect(clientDb.name).toBe(client.name);
     expect(clientDb.email).toBe(client.email);
     expect(clientDb.createdAt).toBeDefined();

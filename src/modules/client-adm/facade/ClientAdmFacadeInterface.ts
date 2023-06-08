@@ -3,14 +3,28 @@ import UseCaseInterface from "../../@shared/domain/usecase/UsecaseInterface";
 export interface AddClientInputDTO {
   name: string;
   email: string;
-  address: string;
+  address: {
+    street: string;
+    number: string;
+    complement?: string;
+    city: string;
+    state: string;
+    zipcode: string;
+  };
 }
 
 export interface AddClientOutputDTO {
   id: string;
   name: string;
   email: string;
-  address: string;
+  address: {
+    street: string;
+    number: string;
+    complement?: string;
+    city: string;
+    state: string;
+    zipcode: string;
+  };
   createdAt: Date;
   updatedAt: Date;
 }
@@ -18,7 +32,14 @@ export interface FindClientOutput {
   id: string;
   name: string;
   email: string;
-  address: string;
+  address: {
+    street: string;
+    number: string;
+    complement?: string;
+    city: string;
+    state: string;
+    zipcode: string;
+  };
   createdAt: Date;
   updatedAt: Date;
 }

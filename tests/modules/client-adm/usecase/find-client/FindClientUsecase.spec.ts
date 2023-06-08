@@ -10,7 +10,13 @@ describe("Add client tests", () => {
     const input = {
       name: "test 1",
       email: "test@example.com",
-      address: "Address 01",
+      address: {
+        street: "Address 1",
+        number: "01",
+        city: "city 01",
+        state: "State 01",
+        zipcode: "88008000",
+      },
     };
     const addClientOutput = await addClientUsecase.execute(input);
 
@@ -19,7 +25,11 @@ describe("Add client tests", () => {
     expect(findClientOutput.id).toBe(addClientOutput.id);
     expect(findClientOutput.name).toBe(input.name);
     expect(findClientOutput.email).toBe(input.email);
-    expect(findClientOutput.address).toBe(input.address);
+    expect(findClientOutput.address.street).toBe(input.address.street);
+    expect(findClientOutput.address.number).toBe(input.address.number);
+    expect(findClientOutput.address.city).toBe(input.address.city);
+    expect(findClientOutput.address.state).toBe(input.address.state);
+    expect(findClientOutput.address.zipcode).toBe(input.address.zipcode);
     expect(findClientOutput.createdAt).toBe(addClientOutput.createdAt);
     expect(findClientOutput.updatedAt).toBe(addClientOutput.updatedAt);
   });

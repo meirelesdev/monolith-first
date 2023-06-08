@@ -5,7 +5,13 @@ describe("Client tests", () => {
     const clientProps = {
       name: "test client",
       email: "test@example.com",
-      address: "Address 1",
+      address: {
+        street: "Address 1",
+        number: "01",
+        city: "city 01",
+        state: "State 01",
+        zipcode: "88008000",
+      },
     };
     const client = new Client(clientProps);
     expect(client.id).toBeDefined();

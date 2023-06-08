@@ -23,6 +23,8 @@ export interface GetProductOutputDTO {
   name: string;
   description: string;
   salesPrice: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export default interface StoreCatalogFacadeInterface {

@@ -1,12 +1,15 @@
 import Client from "../../../../modules/client-adm/entity/Client";
 import ClientRepository from "../../../../modules/client-adm/repository/ClientRepository";
+import AddressModel from "./AddressModel";
 import ClientModel from "./ClientModel";
 
 export default class ClientRepositorySequelize implements ClientRepository {
   clientModel: typeof ClientModel;
+  addressModel: typeof AddressModel;
 
   constructor() {
     this.clientModel = ClientModel;
+    this.addressModel = AddressModel;
   }
 
   async add(client: Client): Promise<Client> {
@@ -14,15 +17,24 @@ export default class ClientRepositorySequelize implements ClientRepository {
       id: client.id,
       name: client.name,
       email: client.email,
-      address: client.address,
       createdAt: client.createdAt,
       updatedAt: client.updatedAt,
     });
+    const addressModel = await this.addressModel.create({
+      client_id: client.id,
+      street: client.address.street,
+      number: client.address.number,
+      complement: client.address.complement,
+      city: client.address.city,
+      state: client.address.state,
+      zipcode: client.address.zipcode,
+    });
+
     return new Client({
       id: clientModel.id,
       name: clientModel.name,
       email: clientModel.email,
-      address: clientModel.address,
+      address: addressModel,
       createdAt: clientModel.createdAt,
       updatedAt: clientModel.updatedAt,
     });
@@ -34,11 +46,16 @@ export default class ClientRepositorySequelize implements ClientRepository {
         id,
       },
     });
-
+    if (!clientModel) throw new Error(`Client not found`);
+    const addressModel = await this.addressModel.findOne({
+      where: {
+        client_id: clientModel.id,
+      },
+    });
     return new Client({
       id: clientModel.id,
       name: clientModel.name,
-      address: clientModel.address,
+      address: addressModel,
       email: clientModel.email,
       createdAt: clientModel.createdAt,
       updatedAt: clientModel.updatedAt,

@@ -17,6 +17,8 @@ export default class GetProductUsecase
       name: product.name,
       description: product.description,
       salesPrice: product.salesPrice,
+      createdAt: product.createdAt,
+      updatedAt: product.updatedAt,
     };
   }
 }
