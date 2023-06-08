@@ -1,9 +1,13 @@
 import UsecaseInterface from "../../../@shared/domain/usecase/UsecaseInterface";
 import ClientAdmFacadeInterface from "../../../client-adm/facade/ClientAdmFacadeInterface";
+import InvoiceFacadeInterface from "../../../invoice/facade/InvoiceFacadeInterface";
+import PaymentFacadeInterface from "../../../payment/facade/PaymentFacadeInterface";
 import ProductAdmFacadeInterface from "../../../product-adm/facade/ProductAdmFacadeInterface";
 import StoreCatalogFacadeInterface from "../../../store-catalog/facade/StoreCatalogFacadeInterface";
 import Client from "../../entity/Client";
-import Product from "../../entity/Product";
+import Order from "../../entity/Order";
+import OrderItem from "../../entity/OrderItem";
+import CheckoutRepository from "../../repository/CheckoutRepository";
 import { PlaceOrderInputDTO, PlaceOrderOutputDTO } from "./PlaceOrderDTO";
 
 export default class PlaceOrderUsecase
@@ -12,35 +16,59 @@ export default class PlaceOrderUsecase
   #clientFacade: ClientAdmFacadeInterface;
   #productFacade: ProductAdmFacadeInterface;
   #storeCatalog: StoreCatalogFacadeInterface;
+  #checkoutRepository: CheckoutRepository;
+  #invoiceFacade: InvoiceFacadeInterface;
+  #paymentFacade: PaymentFacadeInterface;
   constructor(
     clientFacade: ClientAdmFacadeInterface,
     productFacade: ProductAdmFacadeInterface,
-    storeCatalog: StoreCatalogFacadeInterface
+    paymentFacade: PaymentFacadeInterface,
+    storeCatalog: StoreCatalogFacadeInterface,
+    checkoutRepository: CheckoutRepository
   ) {
     this.#clientFacade = clientFacade;
     this.#productFacade = productFacade;
+    this.#paymentFacade = paymentFacade;
     this.#storeCatalog = storeCatalog;
+    this.#checkoutRepository = checkoutRepository;
   }
   async execute(input: PlaceOrderInputDTO): Promise<PlaceOrderOutputDTO> {
     const clientData = await this.#clientFacade.findClient(input.clientId);
     await this.validateProducts(input);
-    const products = await Promise.all(
-      input.products.map(async (p) => await this.getProduct(p.productId))
-    );
+    const orderItems = await Promise.all(input.products.map(async (p) => await this.getProduct(p)));
     const clientProps = {
       id: clientData.id,
       name: clientData.name,
       email: clientData.email,
+      document: clientData.document,
       address: clientData.address,
     };
     const client = new Client(clientProps);
-    console.log(products);
+    const order = new Order({
+      client,
+      items: orderItems,
+    });
+    const payment = await this.#paymentFacade.process({ amount: order.total, orderId: order.id });
+    if (payment.status === "approved") {
+      const invoice = await this.#invoiceFacade.create({
+        name: client.name,
+        document: client.document,
+        street: client.address.street,
+        number: client.address.number,
+        city: client.address.city,
+        state: client.address.state,
+        zipcode: client.address.zipcode,
+        items: orderItems,
+      });
+    }
+    await this.#checkoutRepository.addOrder(order);
+
     return {
-      id: "",
-      invoiceId: "",
-      products: [],
-      status: "pending",
-      total: 0,
+      id: order.id,
+      invoiceId: null,
+      products: input.products,
+      status: payment.status,
+      total: payment.amount,
     };
   }
   private async validateProducts(input: PlaceOrderInputDTO): Promise<void> {
@@ -53,17 +81,16 @@ export default class PlaceOrderUsecase
     }
   }
 
-  private async getProduct(id: string): Promise<Product> {
+  private async getProduct(input: { productId: string; quantity: number }): Promise<OrderItem> {
     const catalogProduct = await this.#storeCatalog.getProduct({
-      productId: id,
+      productId: input.productId,
     });
-    return new Product({
+    return new OrderItem({
       id: catalogProduct.id,
       name: catalogProduct.name,
       description: catalogProduct.description,
-      salesPrice: catalogProduct.salesPrice,
-      createdAt: catalogProduct.createdAt,
-      updatedAt: catalogProduct.updatedAt,
+      price: catalogProduct.salesPrice,
+      quantity: input.quantity,
     });
   }
 }

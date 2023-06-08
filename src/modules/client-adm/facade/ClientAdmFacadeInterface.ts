@@ -32,6 +32,7 @@ export interface FindClientOutput {
   id: string;
   name: string;
   email: string;
+  document: string;
   address: {
     street: string;
     number: string;

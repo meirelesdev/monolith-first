@@ -48,7 +48,6 @@ export default class Address {
   validate(): void {
     const invalidAddress =
       !this.street || !this.number || !this.city || !this.state || !this.zipcode;
-    console.log(invalidAddress);
     if (invalidAddress) throw new Error("Invalid Address");
   }
 }

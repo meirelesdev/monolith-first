@@ -1,23 +1,26 @@
 import BaseEntity from "../../@shared/domain/entity/BaseEntity";
 
-interface ProductProps {
+interface OrderItemProps {
   id?: string;
   name: string;
   description: string;
-  salesPrice: number;
+  price: number;
+  quantity: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export default class Product extends BaseEntity {
+export default class OrderItem extends BaseEntity {
   #name: string;
   #description: string;
-  #salesPrice: number;
-  constructor(props: ProductProps) {
+  #price: number;
+  #quantity: number;
+  constructor(props: OrderItemProps) {
     super(props.id, props.createdAt, props.updatedAt);
     this.#name = props.name;
     this.#description = props.description;
-    this.#salesPrice = props.salesPrice;
+    this.#price = props.price;
+    this.#quantity = props.quantity;
   }
 
   get name(): string {
@@ -27,7 +30,16 @@ export default class Product extends BaseEntity {
   get description(): string {
     return this.#description;
   }
-  get salesPrice(): number {
-    return this.#salesPrice;
+
+  get price(): number {
+    return this.#price;
+  }
+
+  get quantity(): number {
+    return this.#quantity;
+  }
+
+  get total(): number {
+    return this.price * this.quantity;
   }
 }

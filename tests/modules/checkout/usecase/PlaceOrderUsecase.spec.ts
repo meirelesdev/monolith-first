@@ -7,6 +7,9 @@ import ProductModel2 from "../../../../src/infra/store-catalog/repository/sequel
 import StoreCatalogFacadeFactory from "../../../../src/infra/store-catalog/facade/StoreCatalogFacadeFactory";
 import { PlaceOrderInputDTO } from "../../../../src/modules/checkout/usecase/place-order/PlaceOrderDTO";
 import PlaceOrderUsecase from "../../../../src/modules/checkout/usecase/place-order/PlaceOrderUsecase";
+import PaymentFacadeFactory from "../../../../src/infra/payment/facade/PaymentFacadeFactory";
+import CheckoutRepositoryMemory from "../../../infra/checkout/repository/memory/CheckoutRepositoryMemory";
+import TransactionModel from "../../../../src/infra/payment/repository/sequelize/TransactionModel";
 
 describe("PlaceOrderUsecase tests", () => {
   let sequelize: Sequelize;
@@ -18,18 +21,27 @@ describe("PlaceOrderUsecase tests", () => {
       sync: { force: true },
     };
     sequelize = new Sequelize(configConnection);
-    sequelize.addModels([ProductModel, ClientModel, ProductModel2]);
+    sequelize.addModels([ProductModel, ClientModel, ProductModel2, TransactionModel]);
     await sequelize.sync();
   });
 
   afterEach(async () => {
     await sequelize.close();
   });
+
   it("should throw an error when client not found", async () => {
     const clientFacade = ClientAdmFacadeFactory.create();
     const productFacade = ProductAdmFacadeFactory.create();
     const catalogFacade = StoreCatalogFacadeFactory.create();
-    const placeOrderUsecase = new PlaceOrderUsecase(clientFacade, productFacade, catalogFacade);
+    const paymentFacade = PaymentFacadeFactory.create();
+    const checkoutRepository = new CheckoutRepositoryMemory();
+    const placeOrderUsecase = new PlaceOrderUsecase(
+      clientFacade,
+      productFacade,
+      paymentFacade,
+      catalogFacade,
+      checkoutRepository
+    );
 
     const input: PlaceOrderInputDTO = {
       clientId: "0",
@@ -39,6 +51,7 @@ describe("PlaceOrderUsecase tests", () => {
       new Error("Client not found")
     );
   });
+
   it("should throw an error when products are not valid", async () => {
     const clientFacade = ClientAdmFacadeFactory.create();
     const mockClient = jest.spyOn(clientFacade, "findClient");
@@ -46,6 +59,8 @@ describe("PlaceOrderUsecase tests", () => {
       Promise.resolve({
         id: "0",
         name: "Client test",
+        document: "1234567890",
+        email: "email@example.com",
         address: {
           street: "Address 1",
           number: "01",
@@ -53,14 +68,21 @@ describe("PlaceOrderUsecase tests", () => {
           state: "State 01",
           zipcode: "88008000",
         },
-        email: "email@example.com",
         createdAt: new Date(),
         updatedAt: new Date(),
       })
     );
     const productFacade = ProductAdmFacadeFactory.create();
     const catalogFacade = StoreCatalogFacadeFactory.create();
-    const placeOrderUsecase = new PlaceOrderUsecase(clientFacade, productFacade, catalogFacade);
+    const paymentFacade = PaymentFacadeFactory.create();
+    const checkoutRepository = new CheckoutRepositoryMemory();
+    const placeOrderUsecase = new PlaceOrderUsecase(
+      clientFacade,
+      productFacade,
+      paymentFacade,
+      catalogFacade,
+      checkoutRepository
+    );
 
     const input: PlaceOrderInputDTO = {
       clientId: "0",
@@ -78,6 +100,8 @@ describe("PlaceOrderUsecase tests", () => {
       Promise.resolve({
         id: "0",
         name: "Client test",
+        email: "email@example.com",
+        document: "1234567890",
         address: {
           street: "Address 1",
           number: "01",
@@ -85,14 +109,21 @@ describe("PlaceOrderUsecase tests", () => {
           state: "State 01",
           zipcode: "88008000",
         },
-        email: "email@example.com",
         createdAt: new Date(),
         updatedAt: new Date(),
       })
     );
     const productFacade = ProductAdmFacadeFactory.create();
     const catalogFacade = StoreCatalogFacadeFactory.create();
-    const placeOrderUsecase = new PlaceOrderUsecase(clientFacade, productFacade, catalogFacade);
+    const paymentFacade = PaymentFacadeFactory.create();
+    const checkoutRepository = new CheckoutRepositoryMemory();
+    const placeOrderUsecase = new PlaceOrderUsecase(
+      clientFacade,
+      productFacade,
+      paymentFacade,
+      catalogFacade,
+      checkoutRepository
+    );
 
     let input: PlaceOrderInputDTO = {
       clientId: "0",
@@ -128,6 +159,8 @@ describe("PlaceOrderUsecase tests", () => {
       Promise.resolve({
         id: "0",
         name: "Client test",
+        document: "1234567890",
+        email: "email@example.com",
         address: {
           street: "Address 1",
           number: "01",
@@ -135,14 +168,21 @@ describe("PlaceOrderUsecase tests", () => {
           state: "State 01",
           zipcode: "88008000",
         },
-        email: "email@example.com",
         createdAt: new Date(),
         updatedAt: new Date(),
       })
     );
     const productFacade = ProductAdmFacadeFactory.create();
     const catalogFacade = StoreCatalogFacadeFactory.create();
-    const placeOrderUsecase = new PlaceOrderUsecase(clientFacade, productFacade, catalogFacade);
+    const paymentFacade = PaymentFacadeFactory.create();
+    const checkoutRepository = new CheckoutRepositoryMemory();
+    const placeOrderUsecase = new PlaceOrderUsecase(
+      clientFacade,
+      productFacade,
+      paymentFacade,
+      catalogFacade,
+      checkoutRepository
+    );
 
     let input: PlaceOrderInputDTO = {
       clientId: "0",
@@ -165,5 +205,69 @@ describe("PlaceOrderUsecase tests", () => {
     await expect(() => placeOrderUsecase.execute(input)).rejects.toThrow(
       new Error("Product 2 is not available in stock")
     );
+  });
+
+  it("should not be approved order when value is less then 100", async () => {
+    await ProductModel.create({
+      id: "1",
+      name: "Product 1",
+      description: "Product description",
+      price: 10,
+      stock: 10,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    await ProductModel.create({
+      id: "2",
+      name: "Product 2",
+      description: "Product description",
+      price: 10,
+      stock: 10,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    const clientFacade = ClientAdmFacadeFactory.create();
+    const mockClient = jest.spyOn(clientFacade, "findClient");
+    mockClient.mockImplementation(() =>
+      Promise.resolve({
+        id: "1",
+        name: "Client test",
+        email: "email@example.com",
+        document: "1234567890",
+        address: {
+          street: "Address 1",
+          number: "01",
+          city: "city 01",
+          state: "State 01",
+          zipcode: "88008000",
+        },
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+    );
+    const productFacade = ProductAdmFacadeFactory.create();
+    const catalogFacade = StoreCatalogFacadeFactory.create();
+    const paymentFacade = PaymentFacadeFactory.create();
+    const checkoutRepository = new CheckoutRepositoryMemory();
+    const placeOrderUsecase = new PlaceOrderUsecase(
+      clientFacade,
+      productFacade,
+      paymentFacade,
+      catalogFacade,
+      checkoutRepository
+    );
+
+    const input: PlaceOrderInputDTO = {
+      clientId: "1",
+      products: [
+        { productId: "1", quantity: 2 },
+        { productId: "2", quantity: 1 },
+      ],
+    };
+    const output = await placeOrderUsecase.execute(input);
+    expect(output.invoiceId).toBeNull();
+    expect(output.products).toStrictEqual(input.products);
+    expect(output.status).toStrictEqual("declined");
+    expect(output.total).toBe(30);
   });
 });

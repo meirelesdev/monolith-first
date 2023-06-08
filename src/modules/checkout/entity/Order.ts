@@ -1,11 +1,11 @@
 import BaseEntity from "../../@shared/domain/entity/BaseEntity";
 import Client from "./Client";
-import Product from "./Product";
+import OrderItem from "./OrderItem";
 
 interface OrderProps {
   id?: string;
   client: Client;
-  products: Product[];
+  items: OrderItem[];
   status?: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -13,20 +13,20 @@ interface OrderProps {
 
 export default class Order extends BaseEntity {
   #client: Client;
-  #products: Product[];
+  #items: OrderItem[];
   #status: string;
   constructor(props: OrderProps) {
     super(props.id, props.createdAt, props.updatedAt);
     this.#client = props.client;
-    this.#products = props.products;
+    this.#items = props.items;
     this.#status = props.status || "pending";
   }
   get client(): Client {
     return this.#client;
   }
 
-  get products(): Product[] {
-    return this.#products;
+  get items(): OrderItem[] {
+    return this.#items;
   }
 
   get status(): string {
@@ -34,6 +34,6 @@ export default class Order extends BaseEntity {
   }
 
   get total(): number {
-    return this.#products.reduce((total, product) => total + product.salesPrice, 0);
+    return this.#items.reduce((total, item) => total + item.total, 0);
   }
 }
