@@ -1,5 +1,5 @@
-import Client from "../../../../modules/client-adm/entity/Client";
-import ClientRepository from "../../../../modules/client-adm/repository/ClientRepository";
+import Client from "../../../../../src/modules/client-adm/entity/Client";
+import ClientRepository from "../../../../../src/modules/client-adm/repository/ClientRepository";
 
 export default class ClientRepositoryMemory implements ClientRepository {
   clients: Client[];

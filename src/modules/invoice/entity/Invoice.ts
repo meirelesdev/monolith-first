@@ -19,18 +19,25 @@ export default class Invoice extends BaseEntity {
     super(props.id, props.createdAt, props.updatedAt);
     this.#name = props.name;
     this.#document = props.document;
+    this.validate();
     this.#address = new Address(props.address);
     this.#items = [];
+  }
+
+  validate(): void {
+    if (!this.#document || !this.#name) throw new Error("Invalid client data");
   }
   addItem(item: InvoiceItem): void {
     this.#items.push(item);
   }
+
   get address(): string {
     const address = `${this.#address.street}, ${this.#address.number}, ${this.#address.zipcode}, ${
       this.#address.complement
     }, ${this.#address.city}, ${this.#address.state}.`;
     return address;
   }
+
   get document(): string {
     return this.#document;
   }
@@ -40,5 +47,9 @@ export default class Invoice extends BaseEntity {
 
   getTotal(): number {
     return this.#items.reduce((sum, item) => sum + item.getPrice(), 0);
+  }
+
+  getItems(): InvoiceItem[] {
+    return this.#items;
   }
 }

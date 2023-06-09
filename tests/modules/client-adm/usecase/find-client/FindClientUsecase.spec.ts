@@ -1,6 +1,6 @@
-import ClientRepositoryMemory from "../../../../../src/infra/client-adm/repository/memory/ClientRepositoryMemory";
 import AddClientUsecase from "../../../../../src/modules/client-adm/usecase/add-client/AddClientUsecase";
 import FindClientUsecase from "../../../../../src/modules/client-adm/usecase/find-client/FindClientUsecase";
+import ClientRepositoryMemory from "../../../../infra/client-adm/repository/memory/ClientRepositoryMemory";
 
 describe("Add client tests", () => {
   it("should create a client", async () => {

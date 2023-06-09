@@ -4,8 +4,8 @@ import InvoiceItem from "../../../../src/modules/invoice/value-object/InvoiceIte
 describe("Invoices tests", () => {
   it("should create an invoice", () => {
     const invoiceProps = {
-      name: "invoice 1",
-      document: "Document 1",
+      name: "Client 1",
+      document: "0123456789",
       address: {
         street: "Street 1",
         number: "Number 1",
@@ -41,8 +41,8 @@ describe("Invoices tests", () => {
 
   it("should not be able to create an invoice whit addres incomplete address", () => {
     const invoiceProps = {
-      name: "invoice 1",
-      document: "Document 1",
+      name: "Client 1",
+      document: "0123456789",
       address: {
         street: "Street 1",
         number: "",
@@ -53,5 +53,20 @@ describe("Invoices tests", () => {
       },
     };
     expect(() => new Invoice(invoiceProps)).toThrow(new Error("Invalid Address"));
+  });
+  it("should not be able to create an invoice whit addres incomplete address", () => {
+    const invoiceProps = {
+      name: "",
+      document: "",
+      address: {
+        street: "Street 1",
+        number: "",
+        complement: "Complement 1",
+        city: "City 1",
+        state: "State 1",
+        zipcode: "88000000",
+      },
+    };
+    expect(() => new Invoice(invoiceProps)).toThrow(new Error("Invalid client data"));
   });
 });

@@ -1,5 +1,5 @@
-import Order from "../../../../../src/modules/checkout/entity/Order";
-import CheckoutRepository from "../../../../../src/modules/checkout/repository/CheckoutRepository";
+import Order from "../../../../src/modules/checkout/entity/Order";
+import CheckoutRepository from "../../../../src/modules/checkout/repository/CheckoutRepository";
 
 export default class CheckoutRepositoryMemory implements CheckoutRepository {
   orders: Order[];
@@ -10,7 +10,6 @@ export default class CheckoutRepositoryMemory implements CheckoutRepository {
     this.orders.push(order);
   }
   async findOrder(id: string): Promise<Order> {
-    const order = this.orders.find((order) => id === order.id);
-    return order;
+    return this.orders.find((order) => id === order.id);
   }
 }

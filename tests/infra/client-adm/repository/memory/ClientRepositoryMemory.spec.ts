@@ -1,4 +1,4 @@
-import ClientRepositoryMemory from "../../../../../src/infra/client-adm/repository/memory/ClientRepositoryMemory";
+import ClientRepositoryMemory from "./ClientRepositoryMemory";
 import Client from "../../../../../src/modules/client-adm/entity/Client";
 
 describe("Client repository memory test", () => {
@@ -6,6 +6,7 @@ describe("Client repository memory test", () => {
     const clientProps = {
       name: "Client 1",
       email: "test@example.com",
+      document: "1234567890",
       address: {
         street: "Address 1",
         number: "01",
@@ -32,6 +33,7 @@ describe("Client repository memory test", () => {
     const clientProps = {
       name: "Client 1",
       email: "test@example.com",
+      document: "123456789",
       address: {
         street: "Address 1",
         number: "01",

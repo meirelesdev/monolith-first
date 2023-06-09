@@ -5,7 +5,8 @@ import ClientRepository from "../../repository/ClientRepository";
 export interface AddClientInputDTO {
   name: string;
   email: string;
-  address: {
+  document?: string;
+  address?: {
     street: string;
     number: string;
     complement?: string;

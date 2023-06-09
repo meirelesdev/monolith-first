@@ -1,6 +1,4 @@
-import UsecaseInterface from "../../@shared/domain/usecase/UsecaseInterface";
-
-export interface InvoiceFacadeInputDTO {
+export interface InvoiceInputDTO {
   name: string;
   document: string;
   street: string;
@@ -16,8 +14,7 @@ export interface InvoiceFacadeInputDTO {
     quantity: number;
   }[];
 }
-
-export interface InvoiceFacadeOutputDTO {
+export interface InvoiceOutputDTO {
   transactionId: string;
   name: string;
   document: string;
@@ -34,12 +31,4 @@ export interface InvoiceFacadeOutputDTO {
     quantity: number;
   }[];
   total: number;
-}
-
-export interface UsecasesInvoiceFacadeProps {
-  processPayment: UsecaseInterface<InvoiceFacadeInputDTO, InvoiceFacadeOutputDTO>;
-}
-
-export default interface InvoiceFacadeInterface {
-  create(input: InvoiceFacadeInputDTO): Promise<InvoiceFacadeOutputDTO>;
 }
