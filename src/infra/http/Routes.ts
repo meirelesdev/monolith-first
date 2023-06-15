@@ -3,6 +3,7 @@ import ModuleFactoryInterface from "./ModuleFactoryInterface";
 import ClientAdmController from "../client-adm/controller/ClientAdmController";
 import ExpressConvert from "./ExpressConverter";
 import ProductAdmController from "../product-adm/controller/ProductAdmController";
+import StoreCatalogController from "../store-catalog/controller/StoreCatalogController";
 
 export default class Router {
   private constructor() {}
@@ -11,6 +12,8 @@ export default class Router {
     const router = express.Router({ mergeParams: true });
     const clientFacade = moduleFactory.createCustomerModule();
     const productFacade = moduleFactory.createProductModule();
+    const storeCatalogFacade = moduleFactory.createStoreCatalogModule();
+    const storeCatalogController = new StoreCatalogController(storeCatalogFacade);
     const clientAdmController = new ClientAdmController(clientFacade);
     const productAdmController = new ProductAdmController(productFacade);
 
@@ -36,6 +39,14 @@ export default class Router {
       ExpressConvert.execute(productAdmController.store.bind(productAdmController))
     );
 
+    router.get(
+      "/products",
+      ExpressConvert.execute(storeCatalogController.index.bind(storeCatalogController))
+    );
+    router.get(
+      "/products/:id",
+      ExpressConvert.execute(storeCatalogController.show.bind(storeCatalogController))
+    );
     // router.get("/invoice/:id", async (req, res) => {});
     // router.post("/checkout", async (req, res) => {});
     return router;
