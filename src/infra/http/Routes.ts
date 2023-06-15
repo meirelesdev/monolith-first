@@ -4,6 +4,7 @@ import ClientAdmController from "../client-adm/controller/ClientAdmController";
 import ExpressConvert from "./ExpressConverter";
 import ProductAdmController from "../product-adm/controller/ProductAdmController";
 import StoreCatalogController from "../store-catalog/controller/StoreCatalogController";
+import InvoiceController from "../invoice/controller/InvoiceController";
 
 export default class Router {
   private constructor() {}
@@ -13,9 +14,12 @@ export default class Router {
     const clientFacade = moduleFactory.createCustomerModule();
     const productFacade = moduleFactory.createProductModule();
     const storeCatalogFacade = moduleFactory.createStoreCatalogModule();
+    const invoiceFacade = moduleFactory.createInvoiceModule();
+
     const storeCatalogController = new StoreCatalogController(storeCatalogFacade);
     const clientAdmController = new ClientAdmController(clientFacade);
     const productAdmController = new ProductAdmController(productFacade);
+    const invoiceController = new InvoiceController(invoiceFacade);
 
     router.get(
       "/clients/:id",
@@ -47,7 +51,14 @@ export default class Router {
       "/products/:id",
       ExpressConvert.execute(storeCatalogController.show.bind(storeCatalogController))
     );
-    // router.get("/invoice/:id", async (req, res) => {});
+    router.post(
+      "/invoices",
+      ExpressConvert.execute(invoiceController.store.bind(invoiceController))
+    );
+    // router.get(
+    //   "/invoices/:id",
+    //   ExpressConvert.execute(invoiceController.show.bind(invoiceController))
+    // );
     // router.post("/checkout", async (req, res) => {});
     return router;
   }
