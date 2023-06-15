@@ -1,6 +1,6 @@
 import UsecaseInterface from "../../../@shared/domain/usecase/UsecaseInterface";
 import ClientAdmFacadeInterface, {
-  FindClientOutput,
+  FindClientFacadeOutputDTO,
 } from "../../../client-adm/facade/ClientAdmFacadeInterface";
 import InvoiceFacadeInterface from "../../../invoice/facade/InvoiceFacadeInterface";
 import PaymentFacadeInterface from "../../../payment/facade/PaymentFacadeInterface";
@@ -82,7 +82,7 @@ export default class PlaceOrderUsecase
   }
 
   private parseAddress(
-    clientData: FindClientOutput,
+    clientData: FindClientFacadeOutputDTO,
     deliveryAddress: PlaceOrderInputDTO["deliveryAddress"]
   ): AddressProps {
     const address = clientData.address || deliveryAddress;

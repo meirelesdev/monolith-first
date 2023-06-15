@@ -51,7 +51,14 @@ export default class AddClientUsecase
       id: client.id,
       name: client.name,
       email: client.email,
-      address: client.address,
+      address: {
+        street: client.address.street,
+        number: client.address.number,
+        complement: client.address.complement,
+        city: client.address.city,
+        state: client.address.state,
+        zipcode: client.address.zipcode,
+      },
       createdAt: client.createdAt,
       updatedAt: client.updatedAt,
     };

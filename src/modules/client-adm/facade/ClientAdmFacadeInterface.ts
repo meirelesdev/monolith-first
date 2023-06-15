@@ -1,6 +1,6 @@
 import UseCaseInterface from "../../@shared/domain/usecase/UsecaseInterface";
 
-export interface AddClientInputDTO {
+export interface AddClientFacadeInputDTO {
   name: string;
   email: string;
   address: {
@@ -13,7 +13,7 @@ export interface AddClientInputDTO {
   };
 }
 
-export interface AddClientOutputDTO {
+export interface AddClientFacadeOutputDTO {
   id: string;
   name: string;
   email: string;
@@ -28,11 +28,11 @@ export interface AddClientOutputDTO {
   createdAt: Date;
   updatedAt: Date;
 }
-export interface FindClientOutput {
+export interface FindClientFacadeOutputDTO {
   id: string;
   name: string;
   email: string;
-  document: string;
+  document?: string;
   address: {
     street: string;
     number: string;
@@ -46,11 +46,13 @@ export interface FindClientOutput {
 }
 
 export interface UsecasesClientFacadeProps {
-  addClientUsecase: UseCaseInterface<AddClientOutputDTO, AddClientOutputDTO>;
-  findClientUsecase: UseCaseInterface<string, FindClientOutput>;
+  addClientUsecase: UseCaseInterface<AddClientFacadeInputDTO, AddClientFacadeOutputDTO>;
+  findClientUsecase: UseCaseInterface<string, FindClientFacadeOutputDTO>;
+  findAllClientsUsecase: UseCaseInterface<void, FindClientFacadeOutputDTO[]>;
 }
 
 export default interface ClientAdmFacadeInterface {
-  addClient(input: AddClientInputDTO): Promise<AddClientOutputDTO>;
-  findClient(input: string): Promise<FindClientOutput>;
+  addClient(input: AddClientFacadeInputDTO): Promise<AddClientFacadeOutputDTO>;
+  findClient(input: string): Promise<FindClientFacadeOutputDTO>;
+  findAllClients(): Promise<FindClientFacadeOutputDTO[]>;
 }

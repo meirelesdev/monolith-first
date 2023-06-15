@@ -5,7 +5,7 @@ interface ClientProps {
   id?: string;
   name: string;
   email: string;
-  document: string;
+  document?: string;
   address: AddressProps;
   createdAt?: Date;
   updatedAt?: Date;
@@ -15,7 +15,7 @@ export default class Client extends BaseEntity {
   #name: string;
   #email: string;
   #address: Address;
-  #document: string;
+  #document?: string;
   constructor(props: ClientProps) {
     super(props.id, props.createdAt, props.updatedAt);
     this.#name = props.name;
@@ -35,7 +35,7 @@ export default class Client extends BaseEntity {
     return this.#address;
   }
 
-  get document(): string {
+  get document(): string | undefined {
     return this.#document;
   }
 }

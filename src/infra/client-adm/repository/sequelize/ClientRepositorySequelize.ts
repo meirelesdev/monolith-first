@@ -30,14 +30,22 @@ export default class ClientRepositorySequelize implements ClientRepository {
       zipcode: client.address.zipcode,
     });
 
-    return new Client({
+    const clientSaved = new Client({
       id: clientModel.id,
       name: clientModel.name,
       email: clientModel.email,
-      address: addressModel,
+      address: {
+        street: addressModel.street,
+        number: addressModel.number,
+        complement: addressModel.complement,
+        city: addressModel.city,
+        state: addressModel.state,
+        zipcode: addressModel.zipcode,
+      },
       createdAt: clientModel.createdAt,
       updatedAt: clientModel.updatedAt,
     });
+    return clientSaved;
   }
 
   async find(id: string): Promise<Client> {
@@ -60,5 +68,27 @@ export default class ClientRepositorySequelize implements ClientRepository {
       createdAt: clientModel.createdAt,
       updatedAt: clientModel.updatedAt,
     });
+  }
+  async findAll(): Promise<Client[]> {
+    const clientsModel = await this.clientModel.findAll();
+    const result = [];
+    for (const clientModel of clientsModel) {
+      const addressModel = await this.addressModel.findOne({
+        where: {
+          client_id: clientModel.id,
+        },
+      });
+      result.push(
+        new Client({
+          id: clientModel.id,
+          name: clientModel.name,
+          address: addressModel,
+          email: clientModel.email,
+          createdAt: clientModel.createdAt,
+          updatedAt: clientModel.updatedAt,
+        })
+      );
+    }
+    return result;
   }
 }

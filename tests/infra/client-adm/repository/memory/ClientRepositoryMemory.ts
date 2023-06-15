@@ -6,6 +6,9 @@ export default class ClientRepositoryMemory implements ClientRepository {
   constructor() {
     this.clients = [];
   }
+  async findAll(): Promise<Client[]> {
+    return this.clients;
+  }
   async add(client: Client): Promise<Client> {
     this.clients.push(client);
     return client;
